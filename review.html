@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz Mania - Review Answers</title>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 20px;
+        background: #f9f9f9;
+      }
+      .section {
+        margin-bottom: 30px;
+      }
+      h2 {
+        color: #333;
+      }
+      .question {
+        margin-bottom: 10px;
+      }
+      .correct {
+        color: green;
+      }
+      .wrong {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🧐 Your Quiz Review</h1>
+    <div id="review-container"></div>
+
+    <script>
+      const rounds = [
+        {
+          name: "Round 1",
+          questions: [
+            {
+              q: "What is 2 + 2?",
+              options: ["3", "4", "5"],
+              answer: 1,
+            },
+            {
+              q: "Capital of France?",
+              options: ["Berlin", "London", "Paris"],
+              answer: 2,
+            },
+            {
+              q: "HTML stands for?",
+              options: [
+                "Hyper Text Markup Language",
+                "Hot Mail",
+                "How to Make Lasagna",
+              ],
+              answer: 0,
+            },
+            { q: "5 * 3 equals?", options: ["8", "15", "20"], answer: 1 },
+            {
+              q: "Color of sky?",
+              options: ["Blue", "Red", "Green"],
+              answer: 0,
+            },
+            {
+              q: "Fastest animal?",
+              options: ["Lion", "Cheetah", "Tiger"],
+              answer: 1,
+            },
+            {
+              q: "JavaScript is?",
+              options: ["Language", "Fruit", "Drink"],
+              answer: 0,
+            },
+            { q: "2^3 equals?", options: ["6", "8", "9"], answer: 1 },
+            {
+              q: "Which is a browser?",
+              options: ["Chrome", "Paint", "Word"],
+              answer: 0,
+            },
+            { q: "Square root of 16?", options: ["4", "6", "8"], answer: 0 },
+
+            // add all 10 round 1 questions
+          ],
+          userAnswers: JSON.parse(
+            localStorage.getItem("round1Answers") || "[]"
+          ),
+        },
+        {
+          name: "Round 2",
+          questions: [
+            {
+              q: "Capital of Japan?",
+              options: ["Beijing", "Seoul", "Tokyo"],
+              answer: 2,
+            },
+            {
+              q: "Einstein's theory?",
+              options: ["Evolution", "Relativity", "Gravity"],
+              answer: 1,
+            },
+            {
+              q: "Largest ocean?",
+              options: ["Atlantic", "Indian", "Pacific"],
+              answer: 2,
+            },
+            {
+              q: "Who painted Mona Lisa?",
+              options: ["Da Vinci", "Van Gogh", "Picasso"],
+              answer: 0,
+            },
+            {
+              q: "Language for styling web pages?",
+              options: ["HTML", "CSS", "JS"],
+              answer: 1,
+            },
+            {
+              q: "Planet known as red?",
+              options: ["Mars", "Venus", "Saturn"],
+              answer: 0,
+            },
+            {
+              q: "H2O is?",
+              options: ["Hydrogen", "Water", "Oxygen"],
+              answer: 1,
+            },
+            {
+              q: "India's capital?",
+              options: ["Mumbai", "Delhi", "Kolkata"],
+              answer: 1,
+            },
+            {
+              q: "Fastest land vehicle?",
+              options: ["Plane", "Car", "Rocket car"],
+              answer: 2,
+            },
+            { q: "5 + 7?", options: ["12", "10", "13"], answer: 0 },
+            // add all 10 round 2 questions
+          ],
+          userAnswers: JSON.parse(
+            localStorage.getItem("round2Answers") || "[]"
+          ),
+        },
+        {
+          name: "Round 3",
+          questions: [
+            {
+              q: "Quantum entanglement defies classical physics.",
+              options: ["False", "True"],
+              answer: 2,
+            },
+            {
+              q: "Black holes emit light from their core.",
+              options: ["False", "True"],
+              answer: 1,
+            },
+            {
+              q: "The Turing test evaluates AI intelligence.",
+              options: ["False", "True"],
+              answer: 2,
+            },
+            {
+              q: "Entropy decreases in a closed system.",
+              options: ["False", "True"],
+              answer: 1,
+            },
+            {
+              q: "Pi is an irrational number.",
+              options: ["False", "True"],
+              answer: 2,
+            },
+            // add all 5 round 3 questions
+          ],
+          userAnswers: JSON.parse(
+            localStorage.getItem("round3Answers") || "[]"
+          ),
+        },
+      ];
+
+      const container = document.getElementById("review-container");
+
+      rounds.forEach((round) => {
+        const section = document.createElement("div");
+        section.className = "section";
+        section.innerHTML = `<h2>${round.name}</h2>`;
+
+        round.questions.forEach((q, i) => {
+          const userAnswer = round.userAnswers[i];
+          const correct = userAnswer === q.answer;
+          const userText =
+            userAnswer !== undefined
+              ? q.options[userAnswer] || "No answer"
+              : "No answer";
+
+          section.innerHTML += `
+          <div class="question">
+            <strong>Q${i + 1}:</strong> ${q.q}<br>
+            Your Answer: <span class="${
+              correct ? "correct" : "wrong"
+            }">${userText}</span><br>
+            Correct Answer: ${q.options[q.answer]}
+          </div>
+        `;
+        });
+
+        container.appendChild(section);
+      });
+    </script>
+  </body>
+</html>

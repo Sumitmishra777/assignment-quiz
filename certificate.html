@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz Mania - Certificate</title>
+    <style>
+      body {
+        font-family: "Georgia", serif;
+        background: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .certificate {
+        background: white;
+        padding: 40px;
+        border: 10px solid #3e4a61;
+        border-radius: 20px;
+        width: 80%;
+        max-width: 800px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+      .certificate h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        color: #2d3e50;
+      }
+      .certificate h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #3e4a61;
+      }
+      .certificate p {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+      .certificate .score {
+        font-size: 20px;
+        margin: 20px 0;
+        font-weight: bold;
+        color: #1b5e20;
+      }
+      #downloadBtn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background: #3e4a61;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      #downloadBtn:hover {
+        background: #2c3650;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="certificate" id="certificate">
+      <p style="text-align: center">
+        <a href="leaderboard.html" target="_blank">📊 View Leaderboard</a>
+      </p>
+
+      <p style="text-align: center; margin-top: 20px">
+        <a href="review.html" target="_blank">🔍 View Answer Review</a>
+      </p>
+
+      <h1>🏆 Certificate of Completion</h1>
+      <h2 id="userName">[Participant Name]</h2>
+      <p>
+        has successfully completed the <strong>Quiz Mania</strong> challenge.
+      </p>
+      <div class="score" id="scoreSummary">
+        <!-- Score summary injected here -->
+      </div>
+      <p>Congratulations on your achievement!</p>
+      <button id="downloadBtn">Download Certificate</button>
+    </div>
+
+    <script>
+      let name = localStorage.getItem("userName") || prompt("Enter your name:");
+      if (name) {
+        localStorage.setItem("userName", name);
+        document.getElementById("userName").innerText = name;
+      }
+
+      const r3 = parseInt(localStorage.getItem("round3Score")) || 0;
+      const total = r3; // Only Round 3 considered
+
+      document.getElementById("scoreSummary").innerHTML = `
+          Round 3 Score: ${r3}/5<br>
+          <br>Total Score: ${total}/5
+        `;
+
+      document.getElementById("downloadBtn").addEventListener("click", () => {
+        import(
+          "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+        ).then(() => {
+          html2canvas(document.getElementById("certificate")).then((canvas) => {
+            const link = document.createElement("a");
+            link.download = `${name}-certificate.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+          });
+        });
+      });
+      // Save to leaderboard in localStorage
+      const leaderboard = JSON.parse(
+        localStorage.getItem("leaderboard") || "[]"
+      );
+
+      leaderboard.push({
+        name: name,
+        score: total,
+        timestamp: new Date().toISOString(),
+      });
+
+      // Keep top 10 sorted
+      leaderboard.sort((a, b) => b.score - a.score);
+      localStorage.setItem(
+        "leaderboard",
+        JSON.stringify(leaderboard.slice(0, 10))
+      );
+    </script>
+  </body>
+</html>
